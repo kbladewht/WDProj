@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <bean id="helloWorld" class="com.ht.DAO.HTDAO">
+   		<property name="sessionFactory" ref="sessionFactory"></property>
+   </bean>
+   
+   <bean id="beanFacade" class="com.ht.builder.BeanFacadeUtil"/>
+   <bean id="datasource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+        <property name="url" value="jdbc:mysql://192.168.1.110:3306/HT"></property>  
+        <property name="username" value="HT" />   
+        <property name="password" value="HT" />       
+    </bean>  
+      
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">  
+        <property name="dataSource" ref="datasource" />  
+        <!-- 注意：我用的是Annotation的方式配置的Hibernate，这里的property的name是annotatedClasses -->  
+      
+        <property name="hibernateProperties">  
+            <props>  
+                <!-- 设置Hibernate方言 -->  
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>  
+                <!-- 是否打印sql -->  
+                <prop key="hibernate.show_sql">true</prop>  
+                <!-- 格式化sql -->  
+                <prop key="hibernate.format_sql">true</prop>  
+                <!-- 是否自动更新表 -->  
+                <prop key="hibernate.hbm2ddl.auto">update</prop>  
+                <prop key="hibernate.current_session_context_class">thread</prop>  
+                <!-- 最大抓取深度，如果为0，则关闭默认的外连接抓取。建议值为0-3 -->  
+                <prop key="hibernate.max_fetch_depth">1</prop>  
+                <!-- 用于生成有助于调试的注释信息，默认为关闭 -->  
+                <prop key="hibernate.use_sql_comments">true</prop>  
+            </props>  
+        </property>  
+        
+        <property name="mappingResources"> 
+         <value>Tiger.hbm.xml</value> 
+         </property> 
+    </bean>  
+
+</beans>
